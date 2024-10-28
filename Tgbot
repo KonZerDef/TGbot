@@ -1,36 +1,44 @@
-# python bot
 import token
 import telebot
 from telebot import types
 import webbrowser
-API_TOKEN = '7931479435:AAEJDqmudFFntut7RMkbLC6gzLaiplDeoPM' # token
-bot = telebot.TeleBot("7931479435:AAEJDqmudFFntut7RMkbLC6gzLaiplDeoPM")
-@bot.message_handler(commands=['site']) # command site for url github
-def site(message):
-    webbrowser.open_new_tab('https://github.com/KonZerDef?tab=overview&from=2024-10-01&to=2024-10-27')
 
-@bot.message_handler(commands=['start']) # ccommand start, print Лёха
+API_TOKEN = '7931479435:AAEJDqmudFFntut7RMkbLC6gzLaiplDeoPM'  # Токен
+bot = telebot.TeleBot(API_TOKEN)
+
+@bot.message_handler(commands=['site'])  # Команда site для URL GitHub
+def site(message):
+    bot.send_message(message.chat.id,"Ссылка на GitHub: [GitHub](https://github.com/KonZerDef?tab=overview&from=2024-10-01&to=2024-10-27)", parse_mode='Markdown')
+
+@bot.message_handler(commands=['start'])  # Команда start,
 def start(message):
-    bot.send_message(message.chat.id, "Лёха!")
+    bot.send_message(message.chat.id, "Здраствуйте! Я начинающий front-end разработчик, частично использую бэк. Этот бот моё первое творение, с помощью него можете поддержать меня и подписаться на мою группу в тг.  ")
+
+    markup = types.ReplyKeyboardMarkup()
+    butn1 = types.KeyboardButton("перейти на гит разраба")
+    markup.row(butn1)
+    bot.send_message(message.chat.id, "Нажмите на кнопку:", reply_markup=markup)
+    bot.register_next_step_handler(message, on_click)
+
+def on_click(message):
+    if message.text == "перейти на гит разраба":
+        webbrowser.open_new_tab('https://github.com/KonZerDef?tab=overview&from=2024-10-01&to=2024-10-27')
+        bot.send_message(message.chat.id, "Сайт открыт")  # Добавлена пропущенная запятая
+
 
 @bot.message_handler()
 def info(message):
     markup = types.InlineKeyboardMarkup()
-    markup.add(types.InlineKeyboardMarkup)
+    # Добавьте кнопки в инлайн-клавиатуру, если это необходимо
     if message.text.lower() == "привет":
-        bot.send_message(message.chat.id, "Здраствуйте пользователь!") # приветствует
+        bot.send_message(message.chat.id, "Здравствуйте, пользователь!")  # Приветствует
     elif message.text.lower() == "id":
-        bot.reply_to(message,f"ID: {message.from_user.id}")
+        bot.reply_to(message, f"ID: {message.from_user.id}")
     elif message.text.lower() == "botname":
         bot.reply_to(message, f"@MATERIAL_EGE_Bot")
     elif message.text.lower() == "разработчик бота":
-        bot.reply_to(message, f"DeusExDeveloper") # ответ на сообщения
-
-@bot.message_handler(content_types=['photo'])
-def get_photo(message):
-    markup = types.InlineKeyboardMarkup()
-    button = types.InlineKeyboardButton("перейти на гит разраба" , url="https://github.com/KonZerDef?tab=overview&from=2024-10-01&to=2024-10-27")
-    markup.add(button)  # Добавляем кнопку в разметку
-    bot.send_message(message.chat.id, "Нажмите на кнопку:", reply_markup=markup) # отвечает на фото ссылкой на гит
+        bot.reply_to(message, f"Zer0Def")  # Ответ на сообщения
+    elif message.text.lower() == "гит разраба":
+        bot.send_message(message.chat.id, "Ссылка на GitHub: https://github.com/KonZerDef")
 
 bot.polling(non_stop=True)
