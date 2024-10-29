@@ -3,7 +3,7 @@ import telebot
 from telebot import types
 import webbrowser
 
-API_TOKEN = '7931479435:AAEJDqmudFFntut7RMkbLC6gzLaiplDeoPM'  # Токен
+API_TOKEN = 'токен'  # Токен
 bot = telebot.TeleBot(API_TOKEN)
 
 @bot.message_handler(commands=['site'])  # Команда site для URL GitHub
